@@ -1,7 +1,9 @@
-name: Test Action
+name: Test Project
 on:
   push:
     branches: [master, 'releases/**'] # Only pushes to main and releases branch trigger the workflow.
+    paths-ignore:
+      - '.github/workflows/*' # Ignore changes to the test workflow file.
   pull_request:
     types: [opened, reopened, synchronize]
   workflow_dispatch:

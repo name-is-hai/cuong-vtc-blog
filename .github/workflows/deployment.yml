@@ -2,6 +2,8 @@ name: Deploy Project
 on:
   push:
     branches: [master, 'releases/**'] # Only pushes to main and releases branch trigger the workflow.
+    paths-ignore:
+      - '.github/workflows/*' # Ignore changes to the test workflow file.
   workflow_dispatch:
 
 jobs:
