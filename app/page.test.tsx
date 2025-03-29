@@ -8,6 +8,6 @@ describe('Page', () => {
 
         const image = screen.getByRole('img', { name: /Next\.js logo/i })
 
-        expect(image).not.toBeInTheDocument()
+        expect(image).toBeInTheDocument()
     })
 })
