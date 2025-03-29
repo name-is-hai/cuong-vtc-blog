@@ -3,7 +3,7 @@ on:
   push:
     branches: [master, 'releases/**'] # Only pushes to main and releases branch trigger the workflow.
   pull_request:
-    types: [opened, reopened, edited, synchronize]
+    types: [opened, reopened, synchronize]
   workflow_dispatch: # Allows you to run the workflow manually from the Actions tab.
 
 jobs:
