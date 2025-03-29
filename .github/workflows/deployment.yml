@@ -1,5 +1,9 @@
 name: Deploy Project
-on: [workflow_dispatch]
+on:
+  push:
+    branches: [master, 'releases/**']
+  workflow_dispatch: # Allows you to run the workflow manually from the Actions tab.
+
 jobs:
   test:
     runs-on: ubuntu-latest
