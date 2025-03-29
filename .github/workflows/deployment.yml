@@ -1,8 +1,8 @@
 name: Deploy Project
 on:
   push:
-    branches: [master, 'releases/**']
-  workflow_dispatch: # Allows you to run the workflow manually from the Actions tab.
+    branches: [master, 'releases/**'] # Only pushes to main and releases branch trigger the workflow.
+  workflow_dispatch:
 
 jobs:
   test:
