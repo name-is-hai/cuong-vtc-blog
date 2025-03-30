@@ -45,10 +45,7 @@ jobs:
           name: build-files
           path: ${{github.workspace}}/.next
           if-no-files-found: error
-          # path: |
-          #   .next
-          #   package.json
-          #   package-lock.json
+          include-hidden-files: true
 
   deploy:
     needs: build
