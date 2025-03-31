@@ -6,13 +6,13 @@ on:
       - '.github/workflows/**' # Ignore changes to the test workflow file.
   workflow_dispatch:
 env:
-  DATABASE_NAME: cuong-vtc-blog
+  PGDATABASE: ${{ secrets.PGDATABASE }}
 jobs:
   test:
     env:
-      DATABASE_PG_HOST: ep-morning-glitter-a59fxpni-pooler.us-east-2.aws.neon.tech
-      DATABASE_PG_USER: cuong-vtc-blog_owner
-      DATABASE_PG_PASSWORD: npg_L6xgNo0BjryK
+      PGHOST: ${{ secrets.PGHOST }}
+      PGUSER: ${{ secrets.PGUSER }}
+      PGPASSWORD: ${{ secrets.PGPASSWORD }}
     runs-on: ubuntu-latest
     steps:
       - name: Cache Git repository
@@ -49,7 +49,7 @@ jobs:
           if-no-files-found: error
           include-hidden-files: true
       - name: Output project
-        run: "echo 'DATABASE_PG_USER: ${{ env.DATABASE_PG_USER }}'"
+        run: "echo 'DATABASE_PG_USER: ${{ env.PGUSER }}'"
 
   build:
     needs: test
@@ -96,4 +96,4 @@ jobs:
       - name: Deploy project
         run: |
           echo "Deploying project..."
-          echo "DATABASE_PG_USER: ${{ env.DATABASE_NAME }}"
+          echo "DATABASE_PG_USER: ${{ env.PGDATABASE }}"
