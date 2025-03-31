@@ -16,6 +16,8 @@ jobs:
       PGPASSWORD: ${{ secrets.PGPASSWORD }}
     runs-on: ubuntu-latest
     steps:
+      - name: Output project
+        run: "echo 'secret_source: ${{ github.secret_source == 'Actions' }}'"
       - name: Cache Git repository
         uses: actions/cache@v4
         with:
@@ -98,4 +100,3 @@ jobs:
         run: |
           echo "Deploying project..."
           echo "DATABASE_PG_USER: ${{ env.PGDATABASE }}"
-          echo ${{env.PGDATABASE}} | sed 's/./& /g'
