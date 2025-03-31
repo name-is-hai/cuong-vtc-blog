@@ -9,6 +9,7 @@ env:
   PGDATABASE: ${{ secrets.PGDATABASE }}
 jobs:
   test:
+    environment: test
     env:
       PGHOST: ${{ secrets.PGHOST }}
       PGUSER: ${{ secrets.PGUSER }}
