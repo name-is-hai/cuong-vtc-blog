@@ -84,7 +84,7 @@ jobs:
           if-no-files-found: error
           include-hidden-files: true
       - name: Deploy project
-      run: |
+        run: |
           echo "secrets project: ${{ toJSON(secrets) }}"
   deploy:
     needs: build
