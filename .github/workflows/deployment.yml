@@ -5,6 +5,12 @@ on:
     paths-ignore:
       - '.github/workflows/**' # Ignore changes to the test workflow file.
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        type: environment
+        default: 'dev'
 env:
   PGHOST: ${{ secrets.PGHOST }}
 jobs:
