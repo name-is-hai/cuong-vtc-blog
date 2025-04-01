@@ -5,6 +5,11 @@ on:
     paths-ignore:
       - '.github/workflows/**' # Ignore changes to the test workflow file.
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        type: environment
 env:
   PGDATABASE: ${{ secrets.PGDATABASE }}
 jobs:
@@ -50,7 +55,7 @@ jobs:
           if-no-files-found: error
           include-hidden-files: true
       - name: Output project
-        run: "echo 'DATABASE_PG_USER: ${{ env.PGUSER }}'"
+        run: "echo 'DATABASE_PG_USER: ${{ secrets.PGUSER }}'"
 
   build:
     needs: test
@@ -83,9 +88,6 @@ jobs:
           path: ${{ github.workspace }}/.next
           if-no-files-found: error
           include-hidden-files: true
-      - name: Deploy project
-        run: |
-          echo "secrets project: ${{ toJSON(secrets) }}"
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -101,4 +103,4 @@ jobs:
       - name: Deploy project
         run: |
           echo "Deploying project..."
-          echo "DATABASE_PG_USER: ${{ env.PGDATABASE }}"
+          echo "DATABASE_PG_USER: ${{ secrets.PGDATABASE }}"
