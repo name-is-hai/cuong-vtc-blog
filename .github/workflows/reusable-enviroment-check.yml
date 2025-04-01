@@ -7,16 +7,13 @@ on:
 jobs:
   on-success:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
-      - run: echo 'The triggering workflow passed'
-  on-failure:
-    runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
-    steps:
-      - run: echo 'The triggering workflow failed'
-  on-cancel:
-    runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'cancel' }}
-    steps:
-      - run: echo 'The triggering workflow failed'
+      - run: echo 'The triggering workflow passed ${{github.event.workflow_run.status}}'
+  # on-failure:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - run: echo 'The triggering workflow failed'
+  # on-cancel:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - run: echo 'The triggering workflow failed'
