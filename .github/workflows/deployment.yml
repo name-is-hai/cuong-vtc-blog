@@ -5,13 +5,8 @@ on:
     paths-ignore:
       - '.github/workflows/**' # Ignore changes to the test workflow file.
   workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Environment to deploy to'
-        required: true
-        type: environment
 env:
-  PGDATABASE: ${{ secrets.PGDATABASE }}
+  PGHOST: ${{ secrets.PGHOST }}
 jobs:
   test:
     environment: test
@@ -103,4 +98,4 @@ jobs:
       - name: Deploy project
         run: |
           echo "Deploying project..."
-          echo "DATABASE_PG_USER: ${{ secrets.PGDATABASE }}"
+          echo "DATABASE_PG_USER: ${{ env.PGHOST }}"
