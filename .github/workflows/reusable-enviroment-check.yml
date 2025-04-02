@@ -1,19 +1,18 @@
-name: Check Environment Variables
+name: Notify Workflow Status
 on:
   workflow_run:
-    workflows: ['Deploy Project']
+    workflows: ['Deploy Project', 'Test Project']
     types:
-      - requested
+      - completed
 jobs:
-  on-success:
+  detect-status:
     runs-on: ubuntu-latest
     steps:
-      - run: echo 'The triggering workflow passed ${{github.event.workflow_run.status}}'
-  # on-failure:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - run: echo 'The triggering workflow failed'
-  # on-cancel:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - run: echo 'The triggering workflow failed'
+      - name: Determine Workflow Status
+        run: |
+          case "${{ github.event.workflow_run.conclusion }}" in
+            success) echo "✅ Workflow completed successfully!" ;;
+            failure) echo "❌ Workflow failed!" ;;
+            cancelled) echo "⚠️ Workflow was canceled!" ;;
+            *) echo "Unknown status: ${{ github.event.workflow_run.conclusion }}" ;;
+          esac

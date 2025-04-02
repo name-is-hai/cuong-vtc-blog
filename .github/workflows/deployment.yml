@@ -11,10 +11,10 @@ on:
         required: true
         type: environment
         default: 'dev'
-env:
-  PGHOST: ${{ secrets.PGHOST }}
+
 jobs:
   test:
+    environment: ${{ github.event.inputs.environment }}
     env:
       PGUSER: ${{ secrets.PGUSER }}
       PGPASSWORD: ${{ secrets.PGPASSWORD }}
@@ -57,6 +57,7 @@ jobs:
         run: "echo 'DATABASE_PG_USER: ${{ env.PGHOST }}'"
 
   build:
+    environment: ${{ github.event.inputs.environment }}
     needs: test
     runs-on: ubuntu-latest
     steps:
@@ -88,6 +89,7 @@ jobs:
           if-no-files-found: error
           include-hidden-files: true
   deploy:
+    environment: ${{ github.event.inputs.environment }}
     needs: build
     runs-on: ubuntu-latest
     steps:
