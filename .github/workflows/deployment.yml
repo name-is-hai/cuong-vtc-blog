@@ -17,11 +17,6 @@ jobs:
     environment: ${{ github.event.inputs.environment }}
     runs-on: ubuntu-latest
     steps:
-      - name: Cache Git repository
-        uses: actions/cache@v4
-        with:
-          path: .git
-          key: ${{ runner.os }}-git-${{ github.sha }}
       - name: Get code
         uses: actions/checkout@v4
       - name: Install Node.js
@@ -29,11 +24,13 @@ jobs:
         with:
           node-version: '22.14.0'
       - name: Cache dependencies
+        id: cache-deps
         uses: actions/cache@v4
         with:
-          path: ~/.npm
+          path: node_modules
           key: ${{ runner.os }}-deps-node-module-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
+        if: ${{ steps.cache-deps.outputs.cache-hit != 'true' }}
         run: npm ci
       - name: Run lint
         run: npm run lint
@@ -56,11 +53,6 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - name: Cache Git repository
-        uses: actions/cache@v4
-        with:
-          path: .git
-          key: ${{ runner.os }}-git-${{ github.sha }}
       - name: Get code
         uses: actions/checkout@v4
       - name: Install Node.js
@@ -68,11 +60,13 @@ jobs:
         with:
           node-version: '22.14.0'
       - name: Cache dependencies
+        id: cache-deps
         uses: actions/cache@v4
         with:
-          path: ~/.npm
+          path: node_modules
           key: ${{ runner.os }}-deps-node-module-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
+        if: ${{ steps.cache-deps.outputs.cache-hit != 'true' }}
         run: npm ci
       - name: Build project
         run: npm run build

@@ -11,8 +11,8 @@ jobs:
       - name: Determine Workflow Status
         run: |
           case "${{ github.event.workflow_run.conclusion }}" in
-            success) echo "✅ Workflow completed successfully!" ;;
-            failure) echo "❌ Workflow failed!" ;;
-            cancelled) echo "⚠️ Workflow was canceled!" ;;
+            success) echo "✅ ${{ github.event.workflow_run.name }} Workflow completed successfully!" ;;
+            failure) echo "❌ ${{ github.event.workflow_run.name }} Workflow failed!" ;;
+            cancelled) echo "⚠️ ${{ github.event.workflow_run.name }} Workflow was canceled!" ;;
             *) echo "Unknown status: ${{ github.event.workflow_run.conclusion }}" ;;
           esac
