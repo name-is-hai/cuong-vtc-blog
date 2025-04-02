@@ -7,16 +7,33 @@ on:
   pull_request:
     types: [opened, reopened, synchronize]
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        type: environment
+        default: 'dev'
 jobs:
   test:
+    environment: ${{ github.event.inputs.environment }}
     runs-on: ubuntu-latest
     steps:
+      - name: Cache Git repository
+        uses: actions/cache@v4
+        with:
+          path: .git
+          key: ${{ runner.os }}-git-${{ github.sha }}
       - name: Get code
         uses: actions/checkout@v4
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22.14.0'
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-deps-node-module-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         run: npm ci
       - name: Run lint
@@ -24,8 +41,10 @@ jobs:
       - name: Run typecheck
         run: npm run typecheck
       - name: Run tests
+        id: test-step
         run: npm run test
       - name: Upload artifact
+        if: ${{ failure() && steps.test-step.conclusion == 'failure' }}
         uses: actions/upload-artifact@v4
         with:
           name: test-files

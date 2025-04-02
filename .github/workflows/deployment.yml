@@ -15,9 +15,6 @@ on:
 jobs:
   test:
     environment: ${{ github.event.inputs.environment }}
-    env:
-      PGUSER: ${{ secrets.PGUSER }}
-      PGPASSWORD: ${{ secrets.PGPASSWORD }}
     runs-on: ubuntu-latest
     steps:
       - name: Cache Git repository
@@ -27,8 +24,6 @@ jobs:
           key: ${{ runner.os }}-git-${{ github.sha }}
       - name: Get code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
@@ -45,16 +40,16 @@ jobs:
       - name: Run typecheck
         run: npm run typecheck
       - name: Run tests
+        id: test-step
         run: npm run test
       - name: Upload artifact
+        if: ${{ failure() && steps.test-step.conclusion == 'failure' }}
         uses: actions/upload-artifact@v4
         with:
           name: test-files
           path: ${{ github.workspace }}/coverage
           if-no-files-found: error
           include-hidden-files: true
-      - name: Output project
-        run: "echo 'DATABASE_PG_USER: ${{ env.PGHOST }}'"
 
   build:
     environment: ${{ github.event.inputs.environment }}
@@ -100,6 +95,4 @@ jobs:
       - name: Output files
         run: ls -l
       - name: Deploy project
-        run: |
-          echo "Deploying project..."
-          echo "DATABASE_PG_USER: ${{ secrets.PGHOST }}"
+        run: echo "Deploying project..."
