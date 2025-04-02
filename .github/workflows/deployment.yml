@@ -15,7 +15,6 @@ env:
   PGHOST: ${{ secrets.PGHOST }}
 jobs:
   test:
-    environment: test
     env:
       PGUSER: ${{ secrets.PGUSER }}
       PGPASSWORD: ${{ secrets.PGPASSWORD }}
@@ -98,9 +97,7 @@ jobs:
           name: build-files
       - name: Output files
         run: ls -l
-      - name: Output project
-        run: "echo 'secret_source: ${{ github.secret_source == 'Actions' }}'"
       - name: Deploy project
         run: |
           echo "Deploying project..."
-          echo "DATABASE_PG_USER: ${{ env.PGHOST }}"
+          echo "DATABASE_PG_USER: ${{ secrets.PGHOST }}"
